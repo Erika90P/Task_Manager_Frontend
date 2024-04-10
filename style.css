@@ -1,0 +1,82 @@
+/* Resetear estilos para todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-image: url('https://www.coreldraw.com/static/cdgs/images/pages/seo/tips/photo/basics/blur-background/blur-background.jpg');
+    background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Fija la imagen para que no se mueva al desplazar la página */
+}
+/* Estilos para el encabezado */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    align-content: center;
+}
+
+/* Estilos para el contenido principal */
+main {
+    padding: 20px;
+    align-content: center;
+    
+}
+
+/* Estilos para el formulario */
+form {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #f19705;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para la lista de tareas */
+#task-list {
+    list-style-type: none;
+    
+}
+
+#task-list li {
+    margin-bottom: 20px
+    
+    
+}
+ul {
+    list-style-type: none; /* Eliminar viñetas de la lista */
+}
+
+
+/* Estilos para el pie de página */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    align-content: center;
+    
+}
