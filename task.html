@@ -3,27 +3,13 @@
     <header>
         <h1>Task Manager</h1>
     </header>
-    <script defer src="index.js"></script>
+    <script defer src="task.js"></script>
     <link rel = "stylesheet" href="style.css">
     <main>
     
-        <section id="login-section">
-            <h2>Belcome</h2><br></br>
-            <form id="login-form" action="index.html" method="POST"> 
-                
-                <label for="email">Email:</label><br></br>
-                <input type="email" id="email" name="email" required><br><br></br>
-                <label for="password">Password:</label><br></br>
-                <input type="password" id="password" name="password" required><br><br></br>
-                <button type="submit">Log In</button>
-            </form>
-        </section> 
-
-       <!-- <section id="add-task-section" style="display: none;">
-        <section id="task-form">
            
             <h2>New Task</h2><br></br>
-            <form action="/create-task" action="/task.html" method="POST">
+            <form id="task-form" action="task.html" method="POST">
                 <label for="task-title">Title:</label><br></br>
                 <input type="text" id="task-title" name="title" required><br><br></br>
                 <label for="task-description">Description:</label> <br></br>
@@ -35,7 +21,8 @@
 
         <section id="task-list">
             <h2>Task List</h2><br></br>
-            <ul>
+            <ul id="tasks"></ul>
+            <!-- <ul>
                 <li>
                 
                     <h3>Name of the task 1</h3> 
@@ -66,8 +53,8 @@
                     <button>Edit</button>
                     <button>Delete</button>
                 </li>
-            </ul>
-        </section> -->
+            </ul> -->
+        </section>
     </main>
 
     <footer>
