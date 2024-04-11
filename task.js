@@ -76,6 +76,8 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
     })
     .then(response => {
         if (!response.ok) {
+            const tasksList = document.getElementById("tasks");
+            console.log(tasksList);
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
