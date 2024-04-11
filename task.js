@@ -5,16 +5,19 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
     const title = document.getElementById("task-title").value;
     const description = document.getElementById("task-description").value;
 
+    // Obtener el userId del usuario actualmente autenticado (suponiendo que ya tienes este valor disponible)
+    const userId = obtenerUserId();
+
     // Especificar la URL del endpoint para crear una nueva tarea
     const createTaskUrl = "https://task1manager-7ffc650e7081.herokuapp.com/api/task";
 
-    // Hacer una solicitud POST al backend para agregar una nueva tarea
+    // Hacer una solicitud POST al backend para agregar una nueva tarea, incluyendo el userId
     fetch(createTaskUrl, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ title: title, description: description }),
+        body: JSON.stringify({ userId: userId, title: title, description: description }),
         credentials: "same-origin"
     })
     .then(response => response.json())
@@ -39,4 +42,11 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
     });
 });
 
-
+// Función para obtener el userId del usuario actualmente autenticado
+function obtenerUserId() {
+    // Aquí debes implementar la lógica para obtener el userId del usuario actual
+    // Por ejemplo, si estás utilizando algún sistema de autenticación de usuarios, podrías obtenerlo de allí
+    // Si estás utilizando un backend con sesión de usuario, podrías obtenerlo desde allí
+    // Por simplicidad, este ejemplo asume que ya tienes el userId disponible
+    return "userIdEjemplo"; // Reemplaza esto con la lógica para obtener el userId real
+}
