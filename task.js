@@ -32,9 +32,25 @@
 //     });
 // });
 // Manejador del evento submit para añadir una nueva tarea
+// Evento para manejar la creación de nuevas tareas o la actualización de una existente
 document.getElementById("task-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevenir el envío del formulario por defecto
 
+    // Verifica si el formulario está en modo de edición
+    const isEditing = event.currentTarget.dataset.isEditing === 'true';
+    const taskId = event.currentTarget.dataset.taskId;
+
+    if (isEditing) {
+        // Modo edición: Actualizar tarea
+        updateTask(taskId);
+    } else {
+        // Modo adición: Agregar nueva tarea
+        addNewTask();
+    }
+});
+
+// Función para agregar una nueva tarea
+function addNewTask() {
     const title = document.getElementById("task-title").value;
     const description = document.getElementById("task-description").value;
     const userId = sessionStorage.getItem('userId'); // Recupera el userId almacenado
@@ -50,27 +66,28 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         credentials: "same-origin"
     })
     .then(response => response.json())
-    .then(data => addTaskToList(data)) // Añade la tarea a la lista
+    .then(data => {
+        addTaskToList(data); // Añade la tarea a la lista
+        resetForm(); // Restablece el formulario
+    })
     .catch(error => {
         console.error("Error:", error);
     });
+}
 
-    // Limpia el formulario
-    document.getElementById("task-title").value = "";
-    document.getElementById("task-description").value = "";
-});
-
+// Añade la tarea al DOM
 function addTaskToList(taskData) {
     const tasksList = document.getElementById("tasks");
 
     // Crea el elemento de lista
     const taskItem = document.createElement("li");
     taskItem.textContent = `${taskData.title}: ${taskData.description}`;
+    taskItem.setAttribute('data-task-id', taskData.id); // Asigna el ID de la tarea como un atributo
 
     // Botón de edición
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
-    editButton.onclick = function() { editTask(taskData.id, taskItem); };
+    editButton.onclick = function() { prepareEditTask(taskData.id, taskItem); };
 
     // Botón de eliminación
     const deleteButton = document.createElement("button");
@@ -85,32 +102,30 @@ function addTaskToList(taskData) {
     tasksList.appendChild(taskItem);
 }
 
-function editTask(taskId, taskItem) {
-    // Simula obtener los datos de la tarea para editar
-    // Por simplicidad, supongamos que estos datos se obtienen directamente del texto del elemento de lista
-    const taskInfo = taskItem.textContent.split(': ');
-    const title = taskInfo[0];
-    const description = taskInfo[1];
+// Prepara el formulario para la edición de una tarea
+function prepareEditTask(taskId, taskItem) {
+    // Extrae el título y la descripción directamente del contenido del elemento de lista
+    const [title, description] = taskItem.textContent.replace('EditDelete', '').split(': '); // Elimina el texto de los botones
 
-    // Simula un formulario de edición rellenando los valores actuales de la tarea
+    // Rellena el formulario con los valores actuales de la tarea
     document.getElementById("task-title").value = title;
-    document.getElementById("task-description").value = description.replace("EditDelete", "").trim(); // Elimina texto de botones
+    document.getElementById("task-description").value = description;
 
-    // Cambia el manejador del formulario para actualizar en lugar de añadir
+    // Marca el formulario como en modo edición y guarda el ID de la tarea que se está editando
     const form = document.getElementById("task-form");
-    form.onsubmit = function(event) {
-        event.preventDefault(); // Previene el envío por defecto
-        updateTask(taskId, taskItem);
-    };
+    form.dataset.isEditing = 'true';
+    form.dataset.taskId = taskId;
 }
 
-function updateTask(taskId, taskItem) {
-    const updateTaskUrl = `https://task1manager-7ffc650e7081.herokuapp.com/api/task/${taskId}`;
+// Actualiza una tarea existente
+function updateTask(taskId) {
     const title = document.getElementById("task-title").value;
     const description = document.getElementById("task-description").value;
 
+    const updateTaskUrl = `https://task1manager-7ffc650e7081.herokuapp.com/api/task/${taskId}`;
+
     fetch(updateTaskUrl, {
-        method: "PUT", // O "PATCH", dependiendo de tu backend
+        method: "PUT", // o "PATCH", dependiendo de tu backend
         headers: {
             "Content-Type": "application/json"
         },
@@ -119,17 +134,20 @@ function updateTask(taskId, taskItem) {
     })
     .then(response => response.json())
     .then(data => {
-        taskItem.textContent = `${data.title}: ${data.description}`; // Actualiza el texto del elemento de lista
-        addTaskToList(data); // Añadir de nuevo botones de acción
+        // Encuentra la tarea en la lista y actualiza su contenido
+        const taskItem = document.querySelector(`[data-task-id='${taskId}']`);
+        if (taskItem) {
+            taskItem.textContent = `${data.title}: ${data.description}`; // Actualiza el texto del elemento de lista
+            addTaskToList(data); // Vuelve a añadir los botones de acción
+        }
+        resetForm(); // Restablece el formulario
     })
     .catch(error => {
         console.error("Error:", error);
     });
-
-    // Restaura el manejador original del formulario
-    document.getElementById("task-form").onsubmit = submitNewTask;
 }
 
+// Elimina una tarea
 function deleteTask(taskId, taskItem) {
     const deleteTaskUrl = `https://task1manager-7ffc650e7081.herokuapp.com/api/task/${taskId}`;
 
@@ -151,7 +169,10 @@ function deleteTask(taskId, taskItem) {
     });
 }
 
-function submitNewTask(event) {
-    // Aquí colocarías el código inicial para añadir una nueva tarea
-    // Este sería el código dentro del evento "submit" del formulario
+// Restablece el formulario a su estado inicial
+function resetForm() {
+    document.getElementById("task-form").reset();
+    const form = document.getElementById("task-form");
+    form.dataset.isEditing = 'false';
+    delete form.dataset.taskId;
 }
