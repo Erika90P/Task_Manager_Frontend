@@ -12,31 +12,36 @@ document.addEventListener("DOMContentLoaded", function() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ email: email, password: password }),
-            credentials: 'include',
+            credentials: 'include', // Importante para incluir cookies en solicitudes cruzadas
         })
-        .then(response => response.json().then(data => ({ ok: response.ok, data })))
-        .then(({ ok, data }) => {
-            if (ok) {
-                console.log(data);
-                if (data.message === 'Login successful') {
-                    // Si la autenticación fue exitosa, puedes almacenar el hecho de que el usuario está logueado,
-                    // pero no el token si es httpOnly, eso lo manejará automáticamente el navegador.
-                    sessionStorage.setItem('isAuthenticated', 'true');
-                    // Redirigir a la página deseada
-                    // window.location.href = "/task.html";
-                }
+        .then(response => {
+            // Primero verificamos si la respuesta de la red fue OK
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Procesamos la respuesta y la convertimos en JSON
+        })
+        .then(data => {
+            console.log(data);
+            if (data.message === 'Login successful') {
+                // Si la autenticación fue exitosa, procedemos según lo planeado
+                sessionStorage.setItem('isAuthenticated', 'true'); // Guardamos el estado de autenticación
+                // Redirigir a la página deseada
+                // window.location.href = "/task.html";
             } else {
-                // Manejo de respuesta no exitosa
-                console.error(data.error); // Muestra un mensaje de error basado en la respuesta
-                alert(data.error); // O cualquier otra forma de notificación al usuario
+                // Si el mensaje no indica un inicio de sesión exitoso, manejamos el caso
+                console.error(data.error); // Mostramos el error en la consola
+                alert(data.error); // O mostramos una notificación al usuario
             }
         })
         .catch(error => {
+            // Aquí capturamos cualquier error que no sea una respuesta de red exitosa
             console.error("Error:", error);
             alert("Error logging in: " + error.message); // Notificación del error al usuario
         });
     });
 });
+
 
 
 
