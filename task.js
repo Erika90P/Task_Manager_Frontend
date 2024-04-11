@@ -8,7 +8,7 @@
 console.log("title ", title);
 console.log("description ",description);
     // Especificar la URL del endpoint para crear una nueva tarea
-    const createTaskUrl = "http://localhost:3000/api/task"; // Reemplaza con la URL de tu backend para crear tarea
+    const createTaskUrl = "https://task1manager-7ffc650e7081.herokuapp.com/api/task"; // Reemplaza con la URL de tu backend para crear tarea
 
     // Hacer una solicitud POST al backend para agregar una nueva tarea
     fetch(createTaskUrl, {
