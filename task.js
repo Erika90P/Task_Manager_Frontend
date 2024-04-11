@@ -74,7 +74,12 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         body: JSON.stringify({ userId: userId, title: title, description: description }),
         credentials: "same-origin"
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         console.log(data);
         const taskItem = document.createElement("li");
@@ -99,8 +104,8 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         deleteButton.textContent = "Eliminar";
         deleteButton.style.marginLeft = "10px";
         deleteButton.onclick = function() {
-            // Aquí puedes añadir una llamada al servidor para eliminar la tarea si es necesario
             taskItem.remove(); // Elimina la tarea de la lista
+            // Aquí puedes añadir una llamada al servidor para eliminar la tarea si es necesario
         };
         taskItem.appendChild(deleteButton);
 
@@ -112,9 +117,9 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
             let newTitle = prompt("Editar título", taskTitle.textContent.replace(": ", ""));
             let newDescription = prompt("Editar descripción", taskDescription.textContent);
 
-            if (newTitle != null && newDescription != null) { // Verificar que el usuario no haya cancelado el prompt
+            if (newTitle != null && newDescription != null) {
                 fetch(`https://task1manager-7ffc650e7081.herokuapp.com/api/task/${data.id}`, {
-                    method: "PUT", // Asegúrate de que este es el método esperado por tu API
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json"
                     },
@@ -123,7 +128,7 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     return response.json();
                 })
