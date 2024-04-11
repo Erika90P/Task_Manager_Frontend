@@ -57,7 +57,6 @@
 //         console.error("Error:", error);
 //     });
 // });
-
 document.getElementById("task-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevenir el envío del formulario por defecto
 
@@ -100,8 +99,8 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         deleteButton.textContent = "Eliminar";
         deleteButton.style.marginLeft = "10px";
         deleteButton.onclick = function() {
+            // Aquí puedes añadir una llamada al servidor para eliminar la tarea si es necesario
             taskItem.remove(); // Elimina la tarea de la lista
-            // Aquí debes agregar la llamada al servidor para eliminar la tarea
         };
         taskItem.appendChild(deleteButton);
 
@@ -110,23 +109,28 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         editButton.textContent = "Editar";
         editButton.style.marginLeft = "10px";
         editButton.onclick = function() {
-            let newTitle = prompt("Editar título", data.title);
-            let newDescription = prompt("Editar descripción", data.description);
+            let newTitle = prompt("Editar título", taskTitle.textContent.replace(": ", ""));
+            let newDescription = prompt("Editar descripción", taskDescription.textContent);
 
-            if(newTitle != null && newDescription != null) { // Verificar que el usuario no haya cancelado el prompt
+            if (newTitle != null && newDescription != null) { // Verificar que el usuario no haya cancelado el prompt
                 fetch(`https://task1manager-7ffc650e7081.herokuapp.com/api/task/${data.id}`, {
-                    method: "PUT",
+                    method: "PUT", // Asegúrate de que este es el método esperado por tu API
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({ title: newTitle, description: newDescription }),
                     credentials: "same-origin"
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(updatedData => {
                     taskTitle.textContent = updatedData.title + ": ";
                     taskDescription.textContent = updatedData.description;
-                    // Aquí puedes actualizar la interfaz de usuario si es necesario
+                    console.log("Tarea actualizada exitosamente");
                 })
                 .catch(error => console.error("Error al actualizar la tarea:", error));
             }
