@@ -143,6 +143,7 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         taskItem.appendChild(editButton);
 
         const tasksList = document.getElementById("tasks");
+        console.log(tasksList);
         tasksList.appendChild(taskItem);
 
         document.getElementById("task-title").value = "";
@@ -152,3 +153,4 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         console.error("Error:", error);
     });
 });
+
