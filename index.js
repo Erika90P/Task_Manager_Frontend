@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch(loginUrl, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true
             },
             body: JSON.stringify({ email: email, password: password }),
             credentials: 'include', // Permite el envío de cookies/headers de autenticación en solicitudes cruzadas de dominio
