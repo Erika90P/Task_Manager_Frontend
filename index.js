@@ -1,46 +1,51 @@
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("login-form").addEventListener("submit", function(event) {
-        event.preventDefault();
+        event.preventDefault(); // Evita el comportamiento por defecto del formulario
 
+        // Recolecta los valores de los campos del formulario
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
+        // URL del endpoint para iniciar sesión
         const loginUrl = "https://task1manager-7ffc650e7081.herokuapp.com/api/user/login";
 
+        // Realiza la solicitud fetch al servidor
         fetch(loginUrl, {
-            method: "POST", // o GET, PUT, etc.
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data),
-            credentials: 'include', // Importante para las solicitudes que incluyen cookies/autenticación
+            body: JSON.stringify({ email: email, password: password }),
+            credentials: 'include', // Permite el envío de cookies/headers de autenticación en solicitudes cruzadas de dominio
         })
         .then(response => {
-            // Primero verificamos si la respuesta de la red fue OK
+            // Verifica si la respuesta del servidor es exitosa
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok'); // Lanza un error si la respuesta no es satisfactoria
             }
-            return response.json(); // Procesamos la respuesta y la convertimos en JSON
+            return response.json(); // Convierte la respuesta en JSON si es exitosa
         })
         .then(data => {
-            console.log(data);
+            // Maneja los datos de la respuesta
+            console.log(data); // Imprime los datos para depuración
             if (data.message === 'Login successful') {
-                // Si la autenticación fue exitosa, procedemos según lo planeado
-                sessionStorage.setItem('isAuthenticated', 'true'); // Guardamos el estado de autenticación
-                // Redirigir a la página deseada
+                // Procede según la lógica de negocio si el inicio de sesión es exitoso
+                sessionStorage.setItem('isAuthenticated', 'true'); // Almacena el estado de autenticación, por ejemplo
+                // Redirige a otra página o actualiza la UI como sea necesario
                 // window.location.href = "/task.html";
             } else {
-                // Si el mensaje no indica un inicio de sesión exitoso, manejamos el caso
-                console.error(data.error); // Mostramos el error en la consola
-                alert(data.error); // O mostramos una notificación al usuario
+                // Maneja otros mensajes o estados de la respuesta
+                console.error(data.error); // Muestra errores específicos de la respuesta
+                alert(data.error); // Notifica al usuario
             }
         })
         .catch(error => {
-            // Aquí capturamos cualquier error que no sea una respuesta de red exitosa
+            // Maneja errores de la solicitud fetch o del procesamiento de la respuesta
             console.error("Error:", error);
-            alert("Error logging in: " + error.message); // Notificación del error al usuario
+            alert("Error logging in: " + error.message); // Notifica al usuario sobre el error
         });
     });
 });
+
 
 
 
