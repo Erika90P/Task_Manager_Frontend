@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const password = document.getElementById("password").value;
         const loginUrl = "https://task1manager-7ffc650e7081.herokuapp.com/api/user/login";
 
-        fetch(url, {
+        fetch(loginUrl, {
             method: "POST", // o GET, PUT, etc.
             headers: {
                 "Content-Type": "application/json"
