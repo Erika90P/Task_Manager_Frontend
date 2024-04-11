@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const password = document.getElementById("password").value;
         const loginUrl = "https://task1manager-7ffc650e7081.herokuapp.com/api/user/login";
 
-        fetch(loginUrl, {
-            method: "POST",
+        fetch(url, {
+            method: "POST", // o GET, PUT, etc.
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ email: email, password: password }),
-            credentials: 'include', // Importante para incluir cookies en solicitudes cruzadas
+            body: JSON.stringify(data),
+            credentials: 'include', // Importante para las solicitudes que incluyen cookies/autenticación
         })
         .then(response => {
             // Primero verificamos si la respuesta de la red fue OK
