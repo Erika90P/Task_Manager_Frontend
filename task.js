@@ -53,13 +53,26 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
         console.log(data);
         const taskItem = document.createElement("li");
 
-        // Crear el texto de la tarea
-        const taskContent = document.createTextNode(data.title); // Asumiendo que el servidor devuelve el título de la tarea
-        taskItem.appendChild(taskContent);
+        // Contenedor para el título y la descripción
+        const taskInfo = document.createElement("div");
+
+        // Crear y añadir el título de la tarea
+        const taskTitle = document.createElement("strong");
+        taskTitle.textContent = data.title + ": "; // Asumiendo que el servidor devuelve el título de la tarea
+        taskInfo.appendChild(taskTitle);
+
+        // Crear y añadir la descripción de la tarea
+        const taskDescription = document.createElement("span");
+        taskDescription.textContent = data.description; // Añade la descripción de la tarea
+        taskInfo.appendChild(taskDescription);
+
+        // Añadir el contenedor de información al item de la lista
+        taskItem.appendChild(taskInfo);
 
         // Crear el botón de eliminar
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Eliminar";
+        deleteButton.style.marginLeft = "10px"; // Añadir un poco de margen para separar del texto
         deleteButton.onclick = function() {
             // Aquí puedes añadir una llamada al servidor para eliminar la tarea si es necesario
             taskItem.remove(); // Elimina la tarea de la lista
