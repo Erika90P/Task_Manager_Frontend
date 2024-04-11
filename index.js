@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Procede según la lógica de negocio si el inicio de sesión es exitoso
                 sessionStorage.setItem('isAuthenticated', 'true'); // Almacena el estado de autenticación, por ejemplo
                 // Redirige a otra página o actualiza la UI como sea necesario
-                sessionStorage.setItem('userId', data.userId); // Almacena el userId en sessionStorage
+                // sessionStorage.setItem('userId', data.userId); // Almacena el userId en sessionStorage
                 window.location.href = "/task.html";
             } else {
                 // Maneja otros mensajes o estados de la respuesta
