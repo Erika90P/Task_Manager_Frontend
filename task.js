@@ -1,3 +1,4 @@
+
 // document.getElementById("task-form").addEventListener("submit", function(event) {
 //     event.preventDefault(); // Prevenir el envío del formulario por defecto
 
@@ -19,7 +20,32 @@
 //     .then(data => {
 //         console.log(data);
 //         const taskItem = document.createElement("li");
-//         taskItem.textContent = data.title; // Asumiendo que el servidor devuelve el título de la tarea
+
+//         // Contenedor para el título y la descripción
+//         const taskInfo = document.createElement("div");
+
+//         // Crear y añadir el título de la tarea
+//         const taskTitle = document.createElement("strong");
+//         taskTitle.textContent = data.title + ": "; // Asumiendo que el servidor devuelve el título de la tarea
+//         taskInfo.appendChild(taskTitle);
+
+//         // Crear y añadir la descripción de la tarea
+//         const taskDescription = document.createElement("span");
+//         taskDescription.textContent = data.description; // Añade la descripción de la tarea
+//         taskInfo.appendChild(taskDescription);
+
+//         // Añadir el contenedor de información al item de la lista
+//         taskItem.appendChild(taskInfo);
+
+//         // Crear el botón de eliminar
+//         const deleteButton = document.createElement("button");
+//         deleteButton.textContent = "Eliminar";
+//         deleteButton.style.marginLeft = "10px"; // Añadir un poco de margen para separar del texto
+//         deleteButton.onclick = function() {
+//             // Aquí puedes añadir una llamada al servidor para eliminar la tarea si es necesario
+//             taskItem.remove(); // Elimina la tarea de la lista
+//         };
+//         taskItem.appendChild(deleteButton);
 
 //         const tasksList = document.getElementById("tasks");
 //         tasksList.appendChild(taskItem);
@@ -31,6 +57,7 @@
 //         console.error("Error:", error);
 //     });
 // });
+
 document.getElementById("task-form").addEventListener("submit", function(event) {
     event.preventDefault(); // Prevenir el envío del formulario por defecto
 
@@ -58,26 +85,53 @@ document.getElementById("task-form").addEventListener("submit", function(event) 
 
         // Crear y añadir el título de la tarea
         const taskTitle = document.createElement("strong");
-        taskTitle.textContent = data.title + ": "; // Asumiendo que el servidor devuelve el título de la tarea
+        taskTitle.textContent = data.title + ": "; 
         taskInfo.appendChild(taskTitle);
 
         // Crear y añadir la descripción de la tarea
         const taskDescription = document.createElement("span");
-        taskDescription.textContent = data.description; // Añade la descripción de la tarea
+        taskDescription.textContent = data.description; 
         taskInfo.appendChild(taskDescription);
 
-        // Añadir el contenedor de información al item de la lista
         taskItem.appendChild(taskInfo);
 
         // Crear el botón de eliminar
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Eliminar";
-        deleteButton.style.marginLeft = "10px"; // Añadir un poco de margen para separar del texto
+        deleteButton.style.marginLeft = "10px";
         deleteButton.onclick = function() {
-            // Aquí puedes añadir una llamada al servidor para eliminar la tarea si es necesario
             taskItem.remove(); // Elimina la tarea de la lista
+            // Aquí debes agregar la llamada al servidor para eliminar la tarea
         };
         taskItem.appendChild(deleteButton);
+
+        // Crear el botón de editar
+        const editButton = document.createElement("button");
+        editButton.textContent = "Editar";
+        editButton.style.marginLeft = "10px";
+        editButton.onclick = function() {
+            let newTitle = prompt("Editar título", data.title);
+            let newDescription = prompt("Editar descripción", data.description);
+
+            if(newTitle != null && newDescription != null) { // Verificar que el usuario no haya cancelado el prompt
+                fetch(`https://task1manager-7ffc650e7081.herokuapp.com/api/task/${data.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ title: newTitle, description: newDescription }),
+                    credentials: "same-origin"
+                })
+                .then(response => response.json())
+                .then(updatedData => {
+                    taskTitle.textContent = updatedData.title + ": ";
+                    taskDescription.textContent = updatedData.description;
+                    // Aquí puedes actualizar la interfaz de usuario si es necesario
+                })
+                .catch(error => console.error("Error al actualizar la tarea:", error));
+            }
+        };
+        taskItem.appendChild(editButton);
 
         const tasksList = document.getElementById("tasks");
         tasksList.appendChild(taskItem);
