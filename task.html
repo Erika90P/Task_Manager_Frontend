@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
     <html lang="en">
     <header>
         <h1>Task Manager</h1>
@@ -62,4 +62,40 @@
         <p>&copy; © 2024 Task Manager. All rights reserved.s.</p>
     </footer>
     </body>
+    </html> -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task Manager</title>
+        <link rel="stylesheet" href="style.css">
+        <script defer src="task.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Task Manager</h1>
+        </header>
+        <main>
+            <section>
+                <h2>New Task</h2>
+                <form id="task-form">
+                    <label for="task-title">Title:</label><br>
+                    <input type="text" id="task-title" name="title" required><br><br>
+                    <label for="task-description">Description:</label><br>
+                    <textarea id="task-description" name="description" required></textarea><br><br>
+                    <button type="submit">Add Task</button>
+                    <!-- Removido el segundo botón de tipo submit para "Add to Calendar" para evitar confusiones en el formulario. Si necesitas esta funcionalidad, considera manejarla de otra manera. -->
+                </form>
+            </section>
+            <section id="task-list">
+                <h2>Task List</h2>
+                <ul id="tasks"></ul>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Task Manager. All rights reserved.</p>
+        </footer>
+    </body>
     </html>
+    
