@@ -1,49 +1,46 @@
 document.addEventListener("DOMContentLoaded", function() {
+    // Assuming you have a form with an ID of 'login-form'
     document.getElementById("login-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Evita el comportamiento por defecto del formulario
+        event.preventDefault(); // Prevents the default form submission behavior
 
-        // Recolecta los valores de los campos del formulario
+        // Collects values from form fields
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        // URL del endpoint para iniciar sesión
-        const loginUrl = "https://task1manager-7ffc650e7081.herokuapp.com/api/user/login";
+        
+        // URL of the login endpoint (adjust as necessary for your environment)
+        // const loginUrl = 'http://localhost:3000/api/user/login';
 
-        // Realiza la solicitud fetch al servidor
+        const loginUrl = 'https://task1manager-7ffc650e7081.herokuapp.com/api/user/login'
+
+        // Performs the fetch request to the server
         fetch(loginUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true
             },
             body: JSON.stringify({ email: email, password: password }),
-            credentials: 'include', // Permite el envío de cookies/headers de autenticación en solicitudes cruzadas de dominio
+            // credentials: 'include', // Necessary if your endpoint requires cookies to be sent
         })
-        .then(response => {
-            // Verifica si la respuesta del servidor es exitosa
-            if (!response.ok) {
-                throw new Error('Network response was not ok'); // Lanza un error si la respuesta no es satisfactoria
-            }
-            return response.json(); // Convierte la respuesta en JSON si es exitosa
-        })
+        .then(response => response.json()) // Parses the JSON response
         .then(data => {
-            // Maneja los datos de la respuesta
-            console.log(data); // Imprime los datos para depuración
             if (data.message === 'Login successful') {
-                // Procede según la lógica de negocio si el inicio de sesión es exitoso
-                sessionStorage.setItem('isAuthenticated', 'true'); // Almacena el estado de autenticación, por ejemplo
-                // Redirige a otra página o actualiza la UI como sea necesario
-                // sessionStorage.setItem('userId', data.userId); // Almacena el userId en sessionStorage
+                // Assuming 'token' and 'userData' are part of the response body
+                console.log(data)
+                localStorage.setItem('token', data.token); // Saves token to localStorage
+                localStorage.setItem('userData', JSON.stringify(data.userData)); // Saves user data to localStorage
+
+                // Redirects to the task.html page upon successful login
                 window.location.href = "/task.html";
             } else {
-                // Maneja otros mensajes o estados de la respuesta
-                console.error(data.error); // Muestra errores específicos de la respuesta
-                alert(data.error); // Notifica al usuario
+                // Handles scenarios where login is not successful
+                console.error(data.error);
+                alert(data.error);
             }
         })
         .catch(error => {
-            // Maneja errores de la solicitud fetch o del procesamiento de la respuesta
+            // Handles any errors that occurred during the fetch operation
             console.error("Error:", error);
-            alert("Error logging in: " + error.message); // Notifica al usuario sobre el error
+            alert("Error logging in: " + error.message);
         });
     });
 });
