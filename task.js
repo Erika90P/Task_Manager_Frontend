@@ -155,14 +155,13 @@
 //         console.error("Error:", error);
 //     });
 // });
-
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("task-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevenir el envío del formulario por defecto
+        event.preventDefault();
 
         const title = document.getElementById("task-title").value;
         const description = document.getElementById("task-description").value;
-        const userId = sessionStorage.getItem('userId'); // Recupera el userId almacenado
+        const userId = sessionStorage.getItem('userId');
 
         const createTaskUrl = "https://task1manager-7ffc650e7081.herokuapp.com/api/task";
 
@@ -176,62 +175,62 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            const taskItem = document.createElement("li");
-            taskItem.setAttribute('data-id', data.id); // Almacenar el ID de la tarea en el elemento
+            if(data && data.id) { // Asegúrate de que data tiene una propiedad id
+                const taskItem = document.createElement("li");
+                taskItem.setAttribute('data-id', data.id);
 
-            const taskInfo = document.createElement("div");
+                const taskInfo = document.createElement("div");
 
-            const taskTitle = document.createElement("strong");
-            taskTitle.textContent = data.title + ": ";
-            taskInfo.appendChild(taskTitle);
+                const taskTitle = document.createElement("strong");
+                taskTitle.textContent = title + ": ";
+                taskInfo.appendChild(taskTitle);
 
-            const taskDescription = document.createElement("span");
-            taskDescription.textContent = data.description;
-            taskInfo.appendChild(taskDescription);
+                const taskDescription = document.createElement("span");
+                taskDescription.textContent = description;
+                taskInfo.appendChild(taskDescription);
 
-            taskItem.appendChild(taskInfo);
+                taskItem.appendChild(taskInfo);
 
-            const deleteButton = document.createElement("button");
-            deleteButton.textContent = "Eliminar";
-            deleteButton.style.marginLeft = "10px";
-            deleteButton.onclick = function() {
-                taskItem.remove();
-                // Aquí deberías también enviar una solicitud al servidor para eliminar la tarea
-            };
-            taskItem.appendChild(deleteButton);
+                // Botón de eliminar (similar a tu implementación actual)
 
-            const editButton = document.createElement("button");
-            editButton.textContent = "Editar";
-            editButton.style.marginLeft = "10px";
-            editButton.onclick = function() {
-                let newTitle = prompt("Editar título", taskTitle.textContent.replace(": ", ""));
-                let newDescription = prompt("Editar descripción", taskDescription.textContent);
-                const taskId = taskItem.getAttribute('data-id'); // Recupera el ID de la tarea
+                const editButton = document.createElement("button");
+                editButton.textContent = "Editar";
+                editButton.style.marginLeft = "10px";
+                editButton.onclick = function() {
+                    let newTitle = prompt("Editar título", title);
+                    let newDescription = prompt("Editar descripción", description);
+                    const taskId = taskItem.getAttribute('data-id');
 
-                if (newTitle != null && newDescription != null) {
-                    fetch(`https://task1manager-7ffc650e7081.herokuapp.com/api/task/${taskId}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ title: newTitle, description: newDescription }),
-                        credentials: "same-origin"
-                    })
-                    .then(response => response.json())
-                    .then(updatedData => {
-                        taskTitle.textContent = updatedData.title + ": ";
-                        taskDescription.textContent = updatedData.description;
-                    })
-                    .catch(error => console.error("Error al actualizar la tarea:", error));
-                }
-            };
-            taskItem.appendChild(editButton);
+                    if (newTitle != null && newDescription != null) {
+                        fetch(`https://task1manager-7ffc650e7081.herokuapp.com/api/task/${taskId}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ title: newTitle, description: newDescription }),
+                            credentials: "same-origin"
+                        })
+                        .then(response => response.json())
+                        .then(updatedData => {
+                            taskTitle.textContent = updatedData.title + ": ";
+                            taskDescription.textContent = updatedData.description;
+                        })
+                        .catch(error => console.error("Error al actualizar la tarea:", error));
+                    }
+                };
+                taskItem.appendChild(editButton);
 
-            document.getElementById("tasks").appendChild(taskItem);
+                document.getElementById("tasks").appendChild(taskItem);
 
-            document.getElementById("task-title").value = "";
-            document.getElementById("task-description").value = "";
+                document.getElementById("task-title").value = "";
+                document.getElementById("task-description").value = "";
+            } else {
+                // Manejar caso donde no se recibe un ID válido
+                console.error("No se recibió un ID de tarea válido.");
+            }
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => {
+            console.error("Error:", error);
+        });
     });
 });
