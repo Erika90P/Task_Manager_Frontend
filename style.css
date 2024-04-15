@@ -1,88 +1,146 @@
-/* Resetear estilos para todos los elementos */
-* {
+{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-body {
-    background-image: url('https://www.coreldraw.com/static/cdgs/images/pages/seo/tips/photo/basics/blur-background/blur-background.jpg');
-    background-size: cover; /* Ajusta la imagen al tamaño del contenedor */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-attachment: fixed; /* Fija la imagen para que no se mueva al desplazar la página */
-}
-/* Estilos para el encabezado */
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-    align-content: center;
-}
-
-/* Estilos para el contenido principal */
-main {
-    padding: 20px;
-    align-content: center;
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
     
+
 }
 
-/* Estilos para el formulario */
+body {
+    background-image: url('https://i.pinimg.com/564x/e0/bd/18/e0bd18efa4166062451f9b1105e5d8f7.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #333;
+    font-family: "Gluten", cursive;
+    font-optical-sizing: auto;
+     font-weight: <weight>;
+    font-style: normal;
+    font-variation-settings: "slnt" 0;
+    font-size: 20px;
+  
+
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.8); /* Ligeramente transparente */
+    color: #fff;
+    padding: 0%;
+    text-align: center;
+}
+
+main {
+    padding: 10px;
+    margin-top: 20px;
+    background: rgba(200, 200, 200, 0.5); /* Fondo semi-transparente para mejor contraste */
+    border-radius: 10px;
+    width: 50%;
+    max-width: 800px;
+    margin: 40px auto; /* Centrado con espacio arriba y abajo */
+    font-size: 20px
+    height: auto; 
+
+}
+
+
+#task-form {
+    flex: 1;
+    margin-right: 20px;
+}
+
 form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea {
-    width: 25%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 90%; /* Más ancho para mejor usabilidad */
+    padding: 12px;
+    margin: 8px 0;
+    border: 2px solid #ccc;
+    border-radius: 8px;
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #f19705;
-    color: #fff;
+    width: 35%;
+    padding: 10px;
+    background-color: #910f05; /* Color más fresco y moderno */
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
-    align-content: center;
+    margin-right: 12%;
+    transition: background 0.3s ease; /* Transición suave */
+    justify-content:center; /* Centra los elementos horizontalmente */
+    margin-top: 5%;
+    font-family: "Gluten", cursive;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings: "slnt" 0;
+  font-size: 15px;
+
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #45a049;
+    
 }
 
-/* Estilos para la lista de tareas */
 #task-list {
-    list-style-type: none;
-    
+
+    margin-left: 50%;
+    list-style-type: none; /* Elimina las viñetas */
+    padding: 0;
+    width: 90%;
+    margin: auto;
+
 }
 
 #task-list li {
-    margin-bottom: 20px
-    
-    
+    list-style-type: none;
+    background: white;
+    align-items: center; /* Alinea verticalmente los elementos del 'li' */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+   
 }
-ul {
-    list-style-type: none; /* Eliminar viñetas de la lista */
+
+input[type="checkbox"] {
+    margin-right: 10px;
 }
 
 
-/* Estilos para el pie de página */
+#logout-button {
+    padding: 10px 20px;
+    background-color: #4e1915; /* Rojo para indicar acción de logout */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#logout-button:hover {
+    background-color: #d32f2f;
+}
+
 footer {
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
-    padding: 20px;
-    align-content: center;
+    padding: 0%;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
-    color: white;
+    height: 1%; 
     text-align: center;
-    
+    min-height: 50px;
 }
